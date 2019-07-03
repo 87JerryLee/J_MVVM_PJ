@@ -30,6 +30,7 @@ abstract class BaseViewModelFragment<T : BaseViewModel<*>> : BaseFragment() {
 
     open fun dataObserver() {
         //注册订阅
+
     }
 
     protected fun <T> registerSubscriber(eventKey: Any, tClass: Class<T>): MutableLiveData<T> {
