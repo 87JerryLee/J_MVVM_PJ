@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import me.yokeyword.fragmentation.SupportFragment
 
 /**
@@ -15,7 +12,6 @@ import me.yokeyword.fragmentation.SupportFragment
  * Date: 2019/06/27 15:42
  */
 abstract class BaseFragment : SupportFragment() {
-    private var binder: Unbinder? = null
     open val TAG: String by lazy { javaClass.simpleName }
 
     /**
@@ -29,15 +25,9 @@ abstract class BaseFragment : SupportFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binder = ButterKnife.bind(this, view)
         initConfig(savedInstanceState)
         initUI(view, savedInstanceState)
         initData(savedInstanceState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binder?.unbind()
     }
 
     /**

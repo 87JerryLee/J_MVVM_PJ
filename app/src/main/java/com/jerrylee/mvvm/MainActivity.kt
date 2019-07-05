@@ -22,8 +22,4 @@ class MainActivity : BaseViewModelActivity<MainViewModel>() {
         super.initConfig(savedInstanceState)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
 }

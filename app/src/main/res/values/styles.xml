@@ -1,5 +1,24 @@
 <resources>
 
+    <style name="BaseAppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowActionBar">false</item>
+
+    </style>
+
+    <style name="AppThemeLight" parent="BaseAppThemeLight">
+      <!--  <item name="themeColor">@color/md_light_blue_500</item>-->
+    </style>
+
+    <style name="AppThemeLight.NoTranslucent" parent="BaseAppThemeLight">
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+    <style name="AppBaseTheme" parent="AppThemeLight">
+
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
