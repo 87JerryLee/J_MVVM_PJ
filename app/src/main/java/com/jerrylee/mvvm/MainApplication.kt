@@ -1,6 +1,7 @@
 package com.jerrylee.mvvm
 
 import android.app.Application
+import com.jerrylee.lib.widget.stateview.core.LoadState
 
 /**
  * Description:
@@ -12,6 +13,11 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+    }
+
+    private fun initLoadState(){
+        LoadState.Builder().build()
     }
 
     override fun onTrimMemory(level: Int) {

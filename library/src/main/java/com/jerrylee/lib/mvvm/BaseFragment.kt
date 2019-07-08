@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jerrylee.lib.widget.stateview.core.LoadManager
 import me.yokeyword.fragmentation.SupportFragment
 
 /**
@@ -19,12 +20,18 @@ abstract class BaseFragment : SupportFragment() {
      */
     abstract val layoutResId: Int
 
+    protected var loadManager: LoadManager? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(layoutResId, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadManager = LoadManager.Builder()
+                .setViewParams(this)
+                .setListener{onStateRefresh()}
+                .build()
         initConfig(savedInstanceState)
         initUI(view, savedInstanceState)
         initData(savedInstanceState)
@@ -38,6 +45,8 @@ abstract class BaseFragment : SupportFragment() {
     protected open fun initData(savedInstanceState: Bundle?) {}
 
     protected open fun initConfig(savedInstanceState: Bundle?) {}
+
+    protected open fun onStateRefresh(){}
 
     /**
      * 处理回退事件

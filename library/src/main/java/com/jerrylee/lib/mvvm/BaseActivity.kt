@@ -2,6 +2,9 @@ package com.jerrylee.lib.mvvm
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import com.jerrylee.lib.widget.stateview.core.LoadManager
+import com.jerrylee.lib.widget.stateview.stateview.BaseStateControl
 
 /**
  * Description:
@@ -11,10 +14,18 @@ import android.support.v7.app.AppCompatActivity
 abstract class BaseActivity : AppCompatActivity() {
     protected abstract val layoutResId: Int
 
+    protected var loadManager: LoadManager? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         beforeSetContentView(savedInstanceState)
         setContentView(layoutResId)
+        loadManager = LoadManager.Builder()
+                .setViewParams(this)
+                .setListener{onStateRefresh()}
+                .build()
+
         initConfig(savedInstanceState)
         initUI(savedInstanceState)
         initData(savedInstanceState)
@@ -31,4 +42,5 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected open fun beforeSetContentView(savedInstanceState: Bundle?) {}
 
+    protected open fun onStateRefresh(){}
 }
