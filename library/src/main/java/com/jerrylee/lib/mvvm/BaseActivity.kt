@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.jerrylee.lib.widget.stateview.core.LoadManager
-import com.jerrylee.lib.widget.stateview.stateview.BaseStateControl
 
 /**
  * Description:
@@ -12,7 +11,6 @@ import com.jerrylee.lib.widget.stateview.stateview.BaseStateControl
  * Date: 2019/06/27 16:50
  */
 abstract class BaseActivity : AppCompatActivity() {
-    protected abstract val layoutResId: Int
 
     protected var loadManager: LoadManager? = null
 
@@ -20,12 +18,14 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         beforeSetContentView(savedInstanceState)
-        setContentView(layoutResId)
-        loadManager = LoadManager.Builder()
-                .setViewParams(this)
-                .setListener{onStateRefresh()}
-                .build()
-
+        setContentView(getLayoutResId())
+        val contentView:View? = findViewById(getContentId())
+        contentView?.let {
+            loadManager = LoadManager.Builder()
+                    .setViewParams(findViewById(getContentId()))
+                    .setListener{onStateRefresh()}
+                    .build()
+        }
         initConfig(savedInstanceState)
         initUI(savedInstanceState)
         initData(savedInstanceState)
@@ -35,6 +35,15 @@ abstract class BaseActivity : AppCompatActivity() {
      * 初始化UI
      */
     abstract fun initUI(savedInstanceState: Bundle?)
+
+    protected abstract fun getLayoutResId():Int
+
+    /**
+     * 获取需要显示loadingView的视图id
+     */
+    protected open fun getContentId():Int{
+        return -1
+    }
 
     protected open fun initData(savedInstanceState: Bundle?) {}
 

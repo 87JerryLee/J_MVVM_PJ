@@ -18,7 +18,7 @@ abstract class BaseViewModelActivity<T : BaseViewModel<*>> : BaseActivity() {
 
     var mViewModel: T? = null
 
-    private val eventKeys = ArrayList<Any>()
+    private val eventKeys = ArrayList<String>()
 
     override fun initConfig(savedInstanceState: Bundle?) {
         super.initConfig(savedInstanceState)
@@ -32,34 +32,33 @@ abstract class BaseViewModelActivity<T : BaseViewModel<*>> : BaseActivity() {
         //注册订阅
     }
 
-    open fun <T> registerSubscriber(eventKey: Any, tClass: Class<T>): MutableLiveData<T> {
+    protected fun <T> registerSubscriber(eventKey: String, tClass: Class<T>): MutableLiveData<T> {
         return registerSubscriber(eventKey, null, tClass)
     }
 
-    open fun <T> registerSubscriber(eventKey: Any, tag: String?, tClass: Class<T>): MutableLiveData<T> {
+    protected fun <T> registerSubscriber(eventKey: String, tag: String?, tClass: Class<T>): MutableLiveData<T> {
         val event: String
         if (TextUtils.isEmpty(tag)) {
-            event = eventKey as String
+            event = eventKey
         } else {
-            event = eventKey.toString() + tag!!
+            event = eventKey + tag!!
         }
         eventKeys.add(event)
-        return LiveDataBus.getDefault().subscribe(eventKey, tag, tClass)
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //清除注册
-        clearEvent()
+        return LiveDataBus.default?.subscribe(event, tClass)!!
     }
 
     private fun clearEvent() {
         if (eventKeys.size > 0) {
             for (i in eventKeys.indices) {
-                LiveDataBus.getDefault().clear(eventKeys[i])
+                LiveDataBus.default?.clear(eventKeys[i])
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //清除注册
+        clearEvent()
     }
 
 }

@@ -3,9 +3,7 @@ package com.jerrylee.mvvm
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.view.View
 import com.jerrylee.lib.mvvm.BaseActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_welcome.*
 
 /**
@@ -14,12 +12,17 @@ import kotlinx.android.synthetic.main.activity_welcome.*
  * Date: 2019/06/28 15:58
  */
 class WelcomeActivity : BaseActivity() {
+    override fun getLayoutResId(): Int {
+        return R.layout.activity_welcome
+    }
 
     private var countDownTimer:CountDownTimer? = null
     private var isFinished:Boolean = false
     private var isCanceled:Boolean = false
 
     override fun initUI(savedInstanceState: Bundle?) {
+        loadManager?.showSuccess()
+
         buSkip.setOnClickListener{
             //取消定时器
             countDownTimer?.cancel()
@@ -41,12 +44,11 @@ class WelcomeActivity : BaseActivity() {
         countDownTimer?.start()
     }
 
-    override val layoutResId: Int
-        get() = R.layout.activity_welcome
+
 
     @Synchronized fun startMain(){
         if (isFinished || isCanceled) return
-        startActivity(Intent(this@WelcomeActivity,MainActivity::class.java))
+        startActivity(Intent(this@WelcomeActivity,WebActivity::class.java))
         finish()
         isFinished = true
     }

@@ -13,7 +13,7 @@ open class BaseRepository {
     private var mCompositeDisposable: CompositeDisposable? = null
 
     /**
-     * 每一次Retrofit网络请求都加入Disposable管理
+     * 每一次Retrofit网络请求都加入CompositeDisposable管理
      */
     protected fun addDisposable(disposable: Disposable) {
         //管理网络请求

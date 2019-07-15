@@ -18,7 +18,7 @@ abstract class BaseViewModelFragment<T : BaseViewModel<*>> : BaseFragment() {
 
     var mViewModel: T? = null
 
-    private val eventKeys = ArrayList<Any>()
+    private val eventKeys = ArrayList<String>()
 
     override fun initConfig(savedInstanceState: Bundle?) {
         super.initConfig(savedInstanceState)
@@ -33,20 +33,14 @@ abstract class BaseViewModelFragment<T : BaseViewModel<*>> : BaseFragment() {
 
     }
 
-    protected fun <T> registerSubscriber(eventKey: Any, tClass: Class<T>): MutableLiveData<T> {
-
-        return registerSubscriber(eventKey, null, tClass)
+    protected fun <T> registerSubscriber(eventKey: String, tClass: Class<T>): MutableLiveData<T>? {
+        eventKeys.add(eventKey)
+        return LiveDataBus.default?.subscribe(eventKey, tClass)
     }
 
-    open fun <T> registerSubscriber(eventKey: Any, tag: String?, tClass: Class<T>): MutableLiveData<T> {
-        val event: String
-        if (TextUtils.isEmpty(tag)) {
-            event = eventKey as String
-        } else {
-            event = eventKey.toString() + tag!!
-        }
-        eventKeys.add(event)
-        return LiveDataBus.getDefault().subscribe(eventKey, tag, tClass)
+    open fun <T> registerSubscriber(eventKey: String, tag: String?, tClass: Class<T>): MutableLiveData<T>? {
+        var newKey:String = eventKey.plus(tag?:"")
+        return registerSubscriber(newKey,tClass)
     }
 
     override fun onDestroyView() {
@@ -58,7 +52,7 @@ abstract class BaseViewModelFragment<T : BaseViewModel<*>> : BaseFragment() {
     private fun clearEvent() {
         if (eventKeys.size > 0) {
             for (i in eventKeys.indices) {
-                LiveDataBus.getDefault().clear(eventKeys[i])
+                LiveDataBus.default?.clear(eventKeys[i])
             }
         }
     }

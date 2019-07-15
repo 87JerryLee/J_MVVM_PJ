@@ -1,25 +1,24 @@
 package com.jerrylee.mvvm
 
 import android.os.Bundle
-import android.view.View
 import com.jerrylee.lib.mvvm.BaseViewModelActivity
 import com.jerrylee.mvvm.mvvm.vm.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import com.jerrylee.mvvm.widget.loadstate.LoadingState
 
 class MainActivity : BaseViewModelActivity<MainViewModel>() {
-    override val layoutResId: Int
-        get() = R.layout.activity_main
 
     override fun initUI(savedInstanceState: Bundle?) {
-        textView.setOnClickListener{it.visibility = View.GONE}
+//        textView?.setOnClickListener{it.visibility = View.GONE}
+
+        loadManager?.showStateView(LoadingState::class.java)
     }
 
-    override fun initData(savedInstanceState: Bundle?) {
-        super.initData(savedInstanceState)
+    override fun getLayoutResId(): Int {
+        return R.layout.activity_main
     }
 
-    override fun initConfig(savedInstanceState: Bundle?) {
-        super.initConfig(savedInstanceState)
+    override fun getContentId(): Int {
+        return R.id.content
     }
 
 }
